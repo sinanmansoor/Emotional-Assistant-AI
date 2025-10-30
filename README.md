@@ -1,9 +1,3 @@
-# Firebase Studio
-
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
-
 ## Running Locally
 
 After downloading the project, follow these steps to run it on your local machine:
@@ -28,7 +22,7 @@ The project needs an API key to use Google's Generative AI services.
 GEMINI_API_KEY=YOUR_API_KEY_HERE
 ```
 
-### 3. Run the Development Server
+3. Run the Development Server
 
 Now you can start the app:
 
