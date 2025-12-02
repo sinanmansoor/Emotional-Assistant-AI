@@ -5,7 +5,6 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Bot, Mic, Send, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './chat-message';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -296,7 +295,7 @@ export default function ChatInterface() {
 
   return (
     <div className="h-full p-4 grid lg:grid-cols-2 gap-4">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 min-h-0">
         <Card>
           <CardHeader>
             <CardTitle>Your Video</CardTitle>
@@ -348,65 +347,65 @@ export default function ChatInterface() {
           </CardContent>
         </Card>
       </div>
-      <Card className="flex flex-col h-full">
-        <CardHeader>
-          <CardTitle>Conversation</CardTitle>
-        </CardHeader>
-        <CardContent className="flex-1 overflow-hidden">
-            <ScrollArea className="h-full pr-4">
-                <div className="flex flex-col gap-4">
-                {messages.map((msg, index) => (
-                    <ChatMessage key={index} role={msg.role} content={msg.content} />
-                ))}
-                {isLoading && (
-                    <div className="flex items-start gap-3 justify-start">
-                        <Bot className="w-8 h-8 p-1.5 rounded-full bg-secondary text-secondary-foreground" />
-                        <div className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground">
-                            <LoadingSpinner className="w-5 h-5 animate-spin"/>
-                        </div>
-                    </div>
-                )}
+      <div className="flex flex-col min-h-0">
+        <Card className="flex flex-col flex-1 min-h-0">
+          <CardHeader className="flex-shrink-0">
+            <CardTitle>Conversation</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1 overflow-y-auto min-h-0">
+            <div className="space-y-4">
+              {messages.map((msg, index) => (
+                <ChatMessage key={index} role={msg.role} content={msg.content} />
+              ))}
+              {isLoading && (
+                <div className="flex items-start gap-3 justify-start">
+                  <Bot className="w-8 h-8 p-1.5 rounded-full bg-secondary text-secondary-foreground" />
+                  <div className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground">
+                    <LoadingSpinner className="w-5 h-5 animate-spin"/>
+                  </div>
                 </div>
-            </ScrollArea>
-        </CardContent>
-        <div className="p-4 border-t">
-          <form onSubmit={handleTextSubmit} className="flex items-center gap-2">
-            <Textarea
-              placeholder="Type your message..."
-              className="flex-1 resize-none"
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleTextSubmit(e as any);
-                }
-              }}
-              rows={1}
-              disabled={isLoading}
-            />
-            <Button
-              type="submit"
-              size="icon"
-              disabled={isLoading || !textInput.trim()}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-            <Button
-              type="button"
-              size="icon"
-              onMouseDown={handleRecordButtonPress}
-              onMouseUp={handleRecordButtonRelease}
-              onTouchStart={handleRecordButtonPress}
-              onTouchEnd={handleRecordButtonRelease}
-              disabled={isLoading || !isMounted}
-              variant={isRecording ? 'destructive' : 'default'}
-            >
-              {isRecording ? <Square /> : <Mic />}
-            </Button>
-          </form>
-        </div>
-      </Card>
+              )}
+            </div>
+          </CardContent>
+          <div className="p-4 border-t flex-shrink-0">
+            <form onSubmit={handleTextSubmit} className="flex items-center gap-2">
+              <Textarea
+                placeholder="Type your message..."
+                className="flex-1 resize-none"
+                value={textInput}
+                onChange={(e) => setTextInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleTextSubmit(e as any);
+                  }
+                }}
+                rows={1}
+                disabled={isLoading}
+              />
+              <Button
+                type="submit"
+                size="icon"
+                disabled={isLoading || !textInput.trim()}
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                onMouseDown={handleRecordButtonPress}
+                onMouseUp={handleRecordButtonRelease}
+                onTouchStart={handleRecordButtonPress}
+                onTouchEnd={handleRecordButtonRelease}
+                disabled={isLoading || !isMounted}
+                variant={isRecording ? 'destructive' : 'default'}
+              >
+                {isRecording ? <Square /> : <Mic />}
+              </Button>
+            </form>
+          </div>
+        </Card>
+      </div>
       <audio ref={audioPlayerRef} className="hidden" />
     </div>
   );
